@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF para Excel</title>
+</head>
+<body>
+    <h2>Converter PDF em Excel</h2>
+
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Converter</button>
+
+    <script>
+        async function uploadFile() {
+            const file = document.getElementById('fileInput').files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('http://127.0.0.1:8000/convert', {
+                method: 'POST',
+                body: formData
+            });
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resultado.xlsx';
+            a.click();
+        }
+    </script>
+</body>
+</html>
